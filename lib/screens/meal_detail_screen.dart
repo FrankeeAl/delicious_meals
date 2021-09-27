@@ -1,5 +1,9 @@
-import 'package:delicious_meals/data/dummy_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import '../data/dummy_data.dart';
+import '../widgets/fab_menu.dart';
 
 class MealDetailScreen extends StatelessWidget {
   const MealDetailScreen({Key? key}) : super(key: key);
@@ -60,7 +64,8 @@ class MealDetailScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 5.0),
-                      child: Text(selectedMeal.ingredients[index]),
+                      child: Text(selectedMeal.ingredients[index],
+                          style: Theme.of(context).textTheme.headline2),
                     ),
                   ),
                   itemCount: selectedMeal.ingredients.length,
@@ -86,13 +91,14 @@ class MealDetailScreen extends StatelessWidget {
                                   child: Text(
                                     '# ${(index + 1)}',
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.headline2,
                                   ),
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
                                 ),
                                 title: Text(
                                   selectedMeal.steps[index],
+                                  style: Theme.of(context).textTheme.headline2,
                                 ),
                               ),
                             ),
@@ -104,6 +110,11 @@ class MealDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: const Padding(
+        padding: EdgeInsets.only(top: 65),
+        child: FloatingActionButtonMenuItem(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
 }

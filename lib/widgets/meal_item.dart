@@ -1,16 +1,17 @@
-import 'package:delicious_meals/models/meal.dart';
-import 'package:delicious_meals/screens/meal_detail_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../models/meal.dart';
+import '../screens/meal_detail_screen.dart';
+
 class MealItem extends StatelessWidget {
-  final String? id;
+  final String id;
   final String title;
 
   final String imgUrl;
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-
+  final Function removeItem;
   const MealItem({
     Key? key,
     required this.title,
@@ -19,6 +20,7 @@ class MealItem extends StatelessWidget {
     required this.complexity,
     required this.affordability,
     required this.id,
+    required this.removeItem,
   }) : super(key: key);
 
   String get complexityText {
@@ -48,11 +50,17 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(BuildContext context) {
-    Navigator.pushNamed(
-      context,
+    Navigator.of(context)
+        .pushReplacementNamed(
       MealDetailScreen.mealDetailsRoute,
       arguments: id,
-    );
+    )
+        .then((result) {
+      if (result != null) {
+        removeItem(result);
+      }
+      print(result);
+    });
   }
 
   @override
@@ -115,31 +123,43 @@ class MealItem extends StatelessWidget {
                 left: 20,
                 right: 10,
               ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Row(children: <Widget>[
-                      const Icon(Icons.schedule),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Text('$duration min'),
-                    ]),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Row(children: <Widget>[
+                        const Icon(Icons.schedule),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          '$duration min',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ]),
+                      Row(children: <Widget>[
+                        const Icon(Icons.work),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          complexityText,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ]),
+                      Row(children: <Widget>[
+                        const Icon(Icons.money),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          affordabilityText,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ]),
+                    ],
                   ),
-                  Row(children: <Widget>[
-                    const Icon(Icons.work),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Text(complexityText),
-                  ]),
-                  Row(children: <Widget>[
-                    const Icon(Icons.money),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Text(affordabilityText),
-                  ]),
                 ],
               ),
             ),
